@@ -1,0 +1,40 @@
+-> Break down of Virtual Machine(JAVA): 
+
+->JVM : -> Java Virtual Machine
+
+-> Class Loader Subsystem: 
+		-> Load the members onto Runtime Data Area
+            -> Bootstrap Class Loader
+                          -> will load the files from rt.jar(Runtime Java Archive) 
+            -> Extension class Loader
+			  -> it is child class of Bootstrap
+			  -> it loads all the extention/external files
+ 	    -> System/Application Class Loader
+			  -> Class from Class Path 
+-> Runtime Data Area:
+                -> Memory Created while Runtime
+	-> Method Area
+		-> Class And Interface will Get the memory 
+                -> All the static members will the memory 
+	-> Heap Area
+		-> All the instance members will get memory 
+ 	-> Java Stack Area
+                -> Execution Takes place over here
+ 		-> It follows LIFO
+		-> main will come's first and leaves last
+	-> PC Register
+		-> Program Counter Register
+		-> Every Method will get memory, and store the count of No of instruction Executed
+	-> Native Method Area 
+		-> Method with native keyword are known as Native methods. Native method will have Platform Dependent Code(C/C++) 
+
+-> Execution Engine:
+   
+   -> Intepreter:
+          -> Interperter  will Call the main Method and start the execution 
+	  -> Interpreter call handle non stream Instructions  
+   -> JIT compiler:  
+	  -> JIT -> Just in time Compiler
+	  -> JIT Compiler will Handle Stream Instruction 
+
+ 
