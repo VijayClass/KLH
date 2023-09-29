@@ -1,0 +1,70 @@
+*/
+Voldemort’s organization follows a strict hierarchy, where each member has a unique ID, and can have only one boss. The organization scores all its members based on their efforts, assigning them some integer rating.
+Now, Voldemort’s minions are planning a secret evil meeting. Their aim is to invite members in a way such that the invitee’s direct boss or direct subordinates are not invited, while keeping the total rating as high as possible.
+Given the organization hierarchy, and every member’s rating, can you figure out the maximum possible total rating of such a meeting.
+Assume N members, whose IDs are in the range [0, N-1], which also serve as indexes of the member rating array.
+Example:
+
+              0 [ Voldemort ! ]
+          /        \
+         1          2
+       /          /    \
+     3           4      5
+
+Ratings: [60, 70, 50, 40, 40, 20]
+Maximum rating = 160 = 60 (0) + 40 (3) + 40 (4) + 20 (5)
+/*
+
+class Member:
+    def __init__(self, id, rating):
+        self.id = id
+        self.rating = rating
+        self.subordinates = []
+
+    def add_subordinate(self, subordinate):
+        self.subordinates.append(subordinate)
+
+def max_meeting_rating(members, current_member, include_current_member, memo):
+    if memo[current_member][include_current_member] != -1:
+        return memo[current_member][include_current_member]
+
+    if include_current_member:
+        total_rating = members[current_member].rating
+        for subordinate in members[current_member].subordinates:
+            total_rating += max_meeting_rating(members, subordinate.id, False, memo)
+        memo[current_member][include_current_member] = total_rating
+    else:
+        total_rating_including_subordinates = 0
+        for subordinate in members[current_member].subordinates:
+            total_rating_including_subordinates += max_meeting_rating(members, subordinate.id, True, memo)
+
+        total_rating_excluding_current_member = 0
+        for subordinate in members[current_member].subordinates:
+            total_rating_excluding_current_member += max_meeting_rating(members, subordinate.id, False, memo)
+
+        memo[current_member][include_current_member] = max(total_rating_including_subordinates, total_rating_excluding_current_member)
+
+    return memo[current_member][include_current_member]
+
+def main():
+    # Define the organization hierarchy and member ratings
+    N = 6
+    members = [Member(i, rating) for i, rating in enumerate([60, 70, 50, 40, 40, 20])]
+
+    # Build the organization hierarchy
+    members[0].add_subordinate(members[1])
+    members[0].add_subordinate(members[2])
+    members[1].add_subordinate(members[3])
+    members[2].add_subordinate(members[4])
+    members[2].add_subordinate(members[5])
+
+    # Create a memoization table
+    memo = [[-1 for _ in range(2)] for _ in range(N)]
+
+    # Calculate the maximum total rating for the meeting
+    max_meeting_rating_value = max_meeting_rating(members, 0, True, memo)
+
+    print("Maximum Meeting Rating:", max_meeting_rating_value)
+
+if __name__ == "__main__":
+    main()
