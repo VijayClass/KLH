@@ -1,0 +1,34 @@
+*/
+Given a string containing only parentheses, scan it to see if the parentheses are well-nested, then:
+●	If they are, return the string as-is.
+●	If they are not, repair the string so that the parentheses are well nested and return the result.
+/*
+
+def repairp(str):
+    stack = []
+    strdiv = list(str)
+    for char in str:
+        if char == '(':
+            stack.append(char)
+        elif char == ')':
+            if stack:
+                stack.pop()
+            else:
+                strdiv.pop()
+    while stack:
+        strdiv.append(")")
+        stack.pop()
+
+    return ''.join(strdiv)
+
+cases = ["(()","()(()","((()))"]
+
+for test in cases:
+    res = repairp(test)
+    print(res)
+
+
+
+work on below scenario's:
+1.Prove Correctness
+2.What if we can modify the string in place?
