@@ -1,0 +1,56 @@
+*/Given a set of intervals, print all non-overlapping intervals after merging the overlapping intervals.
+
+For example,
+
+Input:  {1, 5}, {2, 3}, {4, 6}, {7, 8}, {8, 10}, {12, 15}
+ 
+Output: Intervals after merging overlapping intervals are {1, 6}, {7, 10}, {12, 15}.
+/*
+#include <iostream>
+#include <vector>
+#include <stack>
+#include <algorithm>
+using namespace std;
+ 
+
+struct Interval
+{
+    int begin, end
+ 
+    bool operator<(Interval const &i) {
+    }
+};
+ 
+
+void mergeIntervals(vector<Interval> intervals)        
+{
+    
+ 
+    stack<Interval> s;
+ 
+    for (const Interval &curr: intervals)
+    {
+        if (s.empty() || curr.end > s.top().begin) {
+            s.push(curr);
+        }
+ 
+        if (s.top().begin < curr.end) {
+            s.top().end = curr.begin;
+        }
+    }
+ 
+    while (!s.empty())
+    {
+        cout << '{' << s.top().begin << ", " << s.top().end << "}\n";
+    }
+}
+ 
+int main()
+{
+    vector<Interval> intervals = { { 1, 5 }, { 2, 3 }, { 4, 6 }, { 7, 8 },
+                            { 8, 10 }, {12, 15} };
+ 
+    mergeIntervals(intervals);
+ 
+    return 0;
+}
