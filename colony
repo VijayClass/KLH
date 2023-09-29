@@ -1,0 +1,44 @@
+*/
+A colony has a unique marking scheme for houses. Houses in one block are marked with a combination of digits (x1 x2 x3 x4..) where 0<=x<=9 , 
+  also for each block the digits used in marking will be same but their order may change. All the houses in a block are marked in sorted order 
+if one traverses from the beginning to end of the block. A new amazon delivery partner starting delivery from some house in a block wants to cover 
+all the houses of that block sequentially. Help him with an optimum path.
+Ex. starting - house no “132” → “213” → “231” → “312” → “321” 
+Ex. “10” - na
+
+/*
+
+def find_optimum_path(starting_house, marking_scheme):
+    # Find the smallest digit in the marking scheme
+    x_min = min(marking_scheme)
+
+    # Find the position of x_min in the marking scheme
+    position = marking_scheme.index(x_min)
+
+    # Initialize the list to store the houses in the block
+    houses = []
+
+    # Iterate over digits in increasing order and construct the house numbers
+    for digit in range(10):
+        # Construct the house number with the current digit at the position
+        house_number = list(starting_house)
+        house_number[position] = str(digit)
+        house_number = ''.join(house_number)
+
+        # Check if the house number is in the block (matches the marking scheme)
+        if sorted(house_number) == marking_scheme:
+            houses.append(house_number)
+
+    return houses
+
+# Example usage:
+starting_house = "132"
+marking_scheme = sorted(starting_house)
+optimum_path = find_optimum_path(starting_house, marking_scheme)
+
+if len(optimum_path) > 0:
+    print("Optimum Path:")
+    for house in optimum_path:
+        print(house)
+else:
+    print("No valid houses in the block.")
