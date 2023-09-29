@@ -1,0 +1,64 @@
+*/
+Design a booking system for a conference room. The system will have a book function that will be called multiple times with a time interval. 
+  If the room is available, the system will return true and will store that time interval. If it's not available, it will just return false.
+The room can only be booked if the time interval does not overlap with any other booked time intervals.
+Example:
+●	book(10, 20) —> true
+●	book(20, 30) —> true
+●	book(5, 15) —> false
+
+
+follow up question : 
+  1.Optimize it
+  2.Add removebooking method
+  3.multiple rooms(ex - 2 rooms)
+  /*
+class ConferenceRoomBookingSystem:
+    def __init__(self, num_rooms=2):
+        self.booked_intervals = [[] for _ in range(num_rooms)]
+
+    def book(self, interval):
+        start_time, end_time = interval
+
+        for room_intervals in self.booked_intervals:
+            overlapped_bookings = 0
+            for existing_interval in room_intervals:
+                if start_time < existing_interval[1] and end_time > existing_interval[0]:
+                    overlapped_bookings += 1
+
+                    if overlapped_bookings >= 2:
+                        return False  # Too many overlapping bookings
+
+            room_intervals.append([start_time, end_time])
+            room_intervals.sort(key=lambda x: x[0])
+
+        return True
+
+    def removeBooking(self, interval):
+        start_time, end_time = interval
+
+        for room_intervals in self.booked_intervals:
+            for existing_interval in room_intervals:
+                if existing_interval == [start_time, end_time]:
+                    room_intervals.remove(existing_interval)
+                    return True
+
+        return False  # Interval not found
+
+# Example usage with two rooms:
+room_system = ConferenceRoomBookingSystem(num_rooms=2)
+bookings = [[10, 20], [15, 25], [20, 30], [25, 35]]
+
+# Attempt to book all intervals
+for interval in bookings:
+    result = room_system.book(interval)
+    print(f"Booking {interval}: {result}")
+
+# Remove a booking
+to_remove = [15, 25]
+removed = room_system.removeBooking(to_remove)
+print(f"Removed {to_remove}: {removed}")
+
+# Print the current booked intervals for each room
+for i, room_intervals in enumerate(room_system.booked_intervals):
+    print(f"Room {i + 1} booked intervals:", room_intervals)
