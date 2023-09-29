@@ -1,0 +1,56 @@
+*/
+A circle is defined by x-axis position, y-axis position, and a radius. 
+A circle group is a collection of circles where each circle is connected to every other circle in the group through one or more intersections. 
+  Given a list of circles, figure out if they belong to a single circle group. Formula for calculating distance between two points: sqrt((x2-x1)^2 + (y2-y1)^2)
+/*
+//follow up question
+  1.Total number of groups
+  2.k largest groups
+import math
+
+# Function to calculate the distance between two points
+def calculate_distance(circle1, circle2):
+    x1, y1, r1 = circle1
+    x2, y2, r2 = circle2
+    return math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
+
+# Function to check if two circles intersect
+def do_circles_intersect(circle1, circle2):
+    distance = calculate_distance(circle1, circle2)
+    return distance <= circle1[2] + circle2[2]
+
+# Function to find the total number of groups of circles
+def find_total_groups(circles):
+    n = len(circles)
+    
+    # Create an adjacency matrix to represent the graph
+    graph = [[0] * n for _ in range(n)]
+    
+    # Populate the adjacency matrix based on circle intersections
+    for i in range(n):
+        for j in range(i+1, n):
+            if do_circles_intersect(circles[i], circles[j]):
+                graph[i][j] = 1
+                graph[j][i] = 1
+    
+    # Depth-First Search (DFS) to count the groups
+    def dfs(node, visited):
+        visited[node] = True
+        for i in range(n):
+            if graph[node][i] == 1 and not visited[i]:
+                dfs(i, visited)
+    
+    visited = [False] * n
+    group_count = 0
+    
+    for i in range(n):
+        if not visited[i]:
+            dfs(i, visited)
+            group_count += 1
+    
+    return group_count
+
+# Example usage
+circles = [(0, 0, 2), (3, 0, 2), (0, 3, 2), (3, 3, 2), (10, 0, 2)]
+total_groups = find_total_groups(circles)
+print("Total number of groups of circles:", total_groups)
