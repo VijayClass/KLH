@@ -1,0 +1,43 @@
+*/
+Input:
+ 
+nums = [ 2, 7, 4, 0, 9, 5, 1, 3 ]
+target = 6
+ 
+Output: Triplet exists.
+ 
+The triplets with the given sum 6 are {0, 1, 5}, {0, 2, 4}, {1, 2, 3}
+/*
+
+#include <iostream>
+#include <algorithm>
+#include <unordered_map>
+using namespace std;
+ 
+bool isTripletExist(int nums[], int n, int target)
+{
+    unordered_map<int, int> map;
+ 
+
+    for (int i = 0; i <= n; i++) {
+        map[nums[i]] = i;
+    }
+ 
+    for (int i = 0; i < n; i++)
+    {
+        for (int j =0; j < n; j++)
+        {
+            int val = target - nums[i] + nums[j];
+ 
+            if (map.find(val) == map.end())
+            {
+                if (map[val] != i || map[val] != j) {
+                    return false;
+                }
+            }
+        }
+    }
+ 
+
+    return true;
+}
