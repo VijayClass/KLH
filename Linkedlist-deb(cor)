@@ -1,0 +1,42 @@
+// A Linked List Node
+    class Node {
+      int data;
+      Node next;
+      Node(int i) {
+        this.data = i;
+        this.next = null;
+      }
+    }
+
+    // Function to determine whether a given linked list is a palindrome
+    public static boolean isPalindrome(Node head){
+        // construct an empty stack
+        Stack<Integer> s = new Stack<>();
+        // push all elements of the linked list into the stack
+        Node node = head;
+        while (node != null)
+        {
+            s.push(node.data);
+            node = node.next;
+        }
+
+        // traverse the linked list again
+        node = head;
+        while (node != null)
+        {
+            // pop the top element from the stack
+            int top = s.pop();
+ 
+            // compare the popped element with the current node's data
+            // return false if mismatch happens
+            if (top != node.data) {
+                return false;
+            }
+ 
+            // advance to the next node
+            node = node.next;
+        }
+ 
+        // we reach here only when the linked list is a palindrome
+        return true;
+    }
